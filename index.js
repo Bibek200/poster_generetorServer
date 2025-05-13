@@ -19,13 +19,19 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Middlewares
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+const allowedOrigins = ['https://poster-ganeretor-frontend.vercel.app'];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-// Static file handling (fixing __dirname issue)
-const __dirname = path.dirname(new URL(import.meta.url).pathname); // This line replaces __dirname
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname); 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
